@@ -14,8 +14,10 @@ Development
 **First steps**
 * run `npm install` in project root
 * see `scripts` in `package.json`
+* start PG and `createdb upvista`
 
 **Main commands**
+* `npm run dev` - run server via nodemon (auto relaunch)
 * `npm run test-ci` - run unit tests in watch mode
 * `npm run coverage` - code coverage in text format in terminal
 * `npm run coverage-html` - code coverage in html format in `coverage` folder

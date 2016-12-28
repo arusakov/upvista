@@ -8,14 +8,15 @@
     "README.md"
   ],
   "scripts": {
+    "build": "tsc -p ./src --outDir ./dist",
     "clean": "rimraf ./dist",
     "codecov": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
     "compile": "tsc --noEmit -p ./src && tsc --noEmit -p ./test",
     "coverage": "NODE_ENV=test TS_NODE_PROJECT=./test nyc mocha",
     "coverage-html": "NODE_ENV=test TS_NODE_PROJECT=./test nyc --reporter=html mocha",
-    "dev": "tsc -w -p ./src",
+    "dev": "nodemon ./src/main.ts",
     "lint": "tslint ./src/**/*.ts ./test/**/*.ts",
-    "prepublish": "npm run clean && tsc -d -p ./src",
+    "prepublish": "npm run clean && npm run build",
     "test": "NODE_ENV=test TS_NODE_PROJECT=./test mocha",
     "test-ci": "NODE_ENV=test TS_NODE_PROJECT=./test mocha --watch --watch-extensions ts",
     "travis": "npm run lint && npm run compile && npm run coverage && npm run codecov"
