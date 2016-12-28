@@ -1,0 +1,65 @@
+{
+  "name": "upvista",
+  "version": "0.0.1",
+  "description": "Any versioning update server",
+  "main": "./dist/main.js",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "clean": "rimraf ./dist",
+    "codecov": "nyc report --reporter=text-lcov > coverage.lcov && codecov",
+    "compile": "tsc --noEmit -p ./src && tsc --noEmit -p ./test",
+    "coverage": "NODE_ENV=test TS_NODE_PROJECT=./test nyc mocha",
+    "coverage-html": "NODE_ENV=test TS_NODE_PROJECT=./test nyc --reporter=html mocha",
+    "dev": "tsc -w -p ./src",
+    "lint": "tslint ./src/**/*.ts ./test/**/*.ts",
+    "prepublish": "npm run clean && tsc -d -p ./src",
+    "test": "NODE_ENV=test TS_NODE_PROJECT=./test mocha",
+    "test-ci": "NODE_ENV=test TS_NODE_PROJECT=./test mocha --watch --watch-extensions ts",
+    "travis": "npm run lint && npm run compile && npm run coverage && npm run codecov"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arusakov/upvista.git"
+  },
+  "keywords": [
+    "updates",
+    "electron",
+    "node",
+    "postgres",
+    "pg"
+  ],
+  "authors": [
+    "Alexander Rusakov <a_s_rusakov@mail.ru> (https://github.com/arusakov)",
+    "Artyom Nikolsky (https://github.com/afrolovskiy)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arusakov/upvista/issues"
+  },
+  "homepage": "https://github.com/arusakov/upvista#readme",
+  "dependencies": {
+    "bluebird": "3.4.7",
+    "koa": "2.0.0-alpha.7",
+    "pg": "6.1.2"
+  },
+  "devDependencies": {
+    "@types/bluebird": "3.0.36",
+    "@types/koa": "2.0.37",
+    "@types/mocha": "2.2.35",
+    "@types/pg": "6.1.34",
+    "codecov": "1.0.1",
+    "mocha": "3.2.0",
+    "nodemon": "1.11.0",
+    "nyc": "10.0.0",
+    "rimraf": "2.5.4",
+    "ts-node": "1.7.3",
+    "tslint": "4.2.0",
+    "typescript": "2.1.4"
+  },
+  "engines": {
+    "node": ">7.2.1"
+  }
+}

@@ -1,0 +1,5 @@
+{
+    "execMap": {
+        "ts": "`npm bin`/ts-node --project ./src"
+    }
+}
