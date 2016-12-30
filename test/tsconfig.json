@@ -1,20 +1,13 @@
 {
+    "extends": "../src/tsconfig.json",
     "compilerOptions": {
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "noImplicitAny": true,
-        "noImplicitReturns": true,
-        "noImplicitThis": true,
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "sourceMap": true,
-        "strictNullChecks": true,
-        "target": "es2015",
+        "target": "es2015", // need it because https://github.com/TypeStrong/ts-node/issues/255
         "types": [
             "bluebird",
             "koa",
             "mocha",
-            "pg"   
+            "node",
+            "pg"
         ]
     },
     "include": [

@@ -50,6 +50,7 @@
     "@types/bluebird": "3.0.36",
     "@types/koa": "2.0.37",
     "@types/mocha": "2.2.35",
+    "@types/node": "6.0.55",
     "@types/pg": "6.1.34",
     "codecov": "1.0.1",
     "mocha": "3.2.0",

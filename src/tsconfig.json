@@ -13,7 +13,8 @@
         "types": [
             "bluebird",
             "koa",
-            "pg"   
+            "node",
+            "pg"
         ]
     },
     "include": [
