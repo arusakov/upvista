@@ -35,3 +35,18 @@ export function createPgPool(): Pool {
   })
   return pool
 }
+
+const selectLastVersionSql = `SELECT * FROM versions`
+
+export async function selectLastVersion(db: Pool, versionCapacity: number) {
+  const orderParams = Array
+    .apply(null, { length: versionCapacity })
+    .map((_v: void, i: number) => `version[${i + 1}] DESC`)
+
+  let sql = selectLastVersionSql
+  sql += ' ORDER BY ' + orderParams.join(', ')
+  sql += ' LIMIT 1;'
+
+  const result = await db.query(sql)
+  return result.rowCount ? result.rows[0] : null
+}

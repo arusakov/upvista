@@ -1,8 +1,8 @@
 import '../src/main'
 
-describe('test', () => {
+describe('main', () => {
 
-  it('one', () => {
+  it('don\'t call main()', () => {
     // do nothing
   })
 
