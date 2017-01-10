@@ -5,11 +5,10 @@ import { createServer } from 'http'
 
 import Koa = require('koa')
 
+import { NODE_ENV, PORT } from './env'
 import { createPgPool } from './store'
 
 async function main() {
-  const PORT = Number(process.env.PORT) || 5555
-
   const app = new Koa()
   const db = createPgPool()
 
@@ -31,6 +30,6 @@ async function main() {
   console.log(`Upvista is running on ${PORT}`) // tslint:disable-line
 }
 
-if (process.env.NODE_ENV !== 'test') {
+if (NODE_ENV !== 'test') {
   main()
 }
