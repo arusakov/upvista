@@ -20,6 +20,10 @@ async function main() {
     ctx.body = 'Hello, It\'s upvista!'
   })
 
+  router.get('/update/:platform/:version', (ctx) => {
+    ctx.body = { /* response for electron */ }
+  })
+
   app.use(router.routes())
   app.use(router.allowedMethods())
 
