@@ -3,20 +3,29 @@ import './init'
 import { readFileSync } from 'fs'
 import { createServer } from 'http'
 
-import Koa = require('koa')
+import * as Koa from 'koa'
+import * as Router from 'koa-router'
 
 import { NODE_ENV, PORT } from './env'
 import { createPgPool } from './store'
 
 async function main() {
   const app = new Koa()
+  const router = new Router()
   const db = createPgPool()
 
   app.context.db = db // for ctx.db
 
-  app.use((ctx) => {
+  router.get('/', (ctx) => {
     ctx.body = 'Hello, It\'s upvista!'
   })
+
+  router.get('/update/:platform/:version', (ctx) => {
+    ctx.body = { /* response for electron */ }
+  })
+
+  app.use(router.routes())
+  app.use(router.allowedMethods())
 
   const server = createServer(app.callback())
   server.on('clientError', (_err: Error, socket: NodeJS.WritableStream) => {

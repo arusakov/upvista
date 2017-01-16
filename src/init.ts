@@ -1,1 +1,3 @@
-global.Promise = require('bluebird'); // tslint:disable-line
+import * as Bluebird from 'bluebird'
+
+global.Promise = Bluebird
