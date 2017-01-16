@@ -9,6 +9,10 @@ Dependencies
 * Node.js (v7.2.1+) and npm (v3+)
 * PostgreSQL (v9.5+)
 
+ENV variables
+------------
+see [env.ts](src/env.ts)
+
 Development
 -----------
 **First steps**

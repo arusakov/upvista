@@ -2,6 +2,8 @@ import { parse, Url } from 'url'
 
 import { Pool, PoolConfig } from 'pg'
 
+import { DATABASE_URL } from './env'
+
 declare module 'koa' {
   export interface Context {
     db: Pool
@@ -14,9 +16,10 @@ export function createPgPool(): Pool {
     max: 20,
   }
 
-  if (process.env.NODE_ENV === 'production') {
+  if (DATABASE_URL) {
+    // todo DATABASE_URL parsing validation
     type UrlStrong = Url & { auth: string, pathname: string }
-    const params = parse(process.env.DATABASE_URL) as UrlStrong
+    const params = parse(DATABASE_URL) as UrlStrong
     const auth = params.auth.split(':')
 
     config = {
