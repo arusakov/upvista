@@ -1,8 +1,9 @@
 BEGIN;
 
 CREATE TABLE IF NOT EXISTS upv_versions (
-    id bigserial PRIMARY KEY,
-    version integer[] NOT NULL
+    id serial PRIMARY KEY, -- id is not bigserial, because node.js doesn't support int64 natively
+    version smallint[] NOT NULL,
+    platform smallint NOT NULL
 );
 
 COMMIT;

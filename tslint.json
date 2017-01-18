@@ -20,6 +20,7 @@
             "ban-keywords",
             "check-format",
             "allow-leading-underscore"
-        ]
+        ],
+        "interface-over-type-literal": false
     }
 }

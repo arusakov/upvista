@@ -10,6 +10,11 @@ import * as Router from 'koa-router'
 import { NODE_ENV, PORT } from './env'
 import { createPgPool } from './store'
 
+type PlatformsMap = {
+  [index: string]: number | undefined;
+}
+const platforms: PlatformsMap = require('../platforms.json') // tslint:disable-line
+
 async function main() {
   const app = new Koa()
   const router = new Router()
@@ -26,6 +31,10 @@ async function main() {
   })
 
   router.get('/update/:platform/:version', (ctx) => {
+    const platformId = platforms[ctx.params.platform]
+    if (!platformId) {
+      ctx.throw(400)
+    }
     ctx.body = { /* response for electron */ }
   })
 
