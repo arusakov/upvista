@@ -13,6 +13,8 @@
         "types": [
             "bluebird",
             "koa",
+            "koa-router",
+            "koa-bodyparser",
             "node",
             "pg"
         ]
