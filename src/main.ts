@@ -8,12 +8,9 @@ import * as bodyparser from 'koa-bodyparser'
 import * as Router from 'koa-router'
 
 import { NODE_ENV, PORT, UPVISTA_CAPACITY } from './env'
-import { createPgPool, insertVersion } from './store'
-
-type PlatformsMap = {
-  [index: string]: number | undefined;
-}
-const platforms: PlatformsMap = require('../platforms.json') // tslint:disable-line
+import { getSquirrelResponse } from './squirrel'
+import { createPgPool, insertVersion, selectLastVersion } from './store'
+import { createValidator } from './validation'
 
 async function main() {
   const app = new Koa()
@@ -22,6 +19,7 @@ async function main() {
     enableTypes: ['json'],
     jsonLimit: '1kb',
   })
+  const validate = createValidator(UPVISTA_CAPACITY)
   const db = createPgPool()
 
   app.context.db = db // for ctx.db
@@ -31,26 +29,37 @@ async function main() {
   })
 
   router.get('/update/:platform/:version', async(ctx) => {
-    // TODO(afrolovskiy): url parsing and validation
-    const url = 'http://127.0.0.1/'
-
-    const platformId = platforms[ctx.params.platform]
-    if (!platformId) {
+    const vap = validate(ctx.params)
+    if (!vap) {
       return ctx.throw(400)
     }
-
-    const version = parseVersion(ctx.params.version)
-    if (!version) {
-      return ctx.throw(400)
+    const row = await selectLastVersion(ctx.db, UPVISTA_CAPACITY, vap.platformId)
+    if (row) {
+      const latestVersion = row.version.join('.')
+      if (ctx.params.version !== latestVersion) {
+        ctx.body = getSquirrelResponse(row.url, latestVersion)
+        return
+      }
     }
-
-    await insertVersion(ctx.db, version, platformId, url)
-
-    ctx.body = { /* response for electron */ }
+    ctx.status = 204 // response is 204 in all other cases
   })
 
-  router.post('/bodyparser', jsonParser, (ctx) => {
-    ctx.body = ctx.request.body
+  router.post('/api/versions', jsonParser, async(ctx) => {
+    const json = ctx.request.body
+    if (!json) {
+      return ctx.throw(400)
+    }
+    // TODO(afrolovskiy): url parsing and validation
+    const { url } = json
+
+    const vap = validate(json)
+    if (!vap) {
+      return ctx.throw(400)
+    }
+
+    await insertVersion(ctx.db, vap.version, vap.platformId, url)
+
+    ctx.body = '' // empty response for HTTP OK
   })
 
   app.use(router.routes())
@@ -61,31 +70,11 @@ async function main() {
     socket.end('HTTP/1.1 400 Bad Request\r\n\r\n')
   })
 
-  await db.query(readFileSync(__dirname + '/schema.sql', 'utf8'))
+  await db.query(readFileSync(__dirname + '/../schema.sql', 'utf8'))
 
   // start accepting requests if all OK
   server.listen(PORT)
   console.log(`Upvista is running on ${PORT}`) // tslint:disable-line
-}
-
-function parseVersion(s: string): number[] | null {
-  const parts = s.split('.')
-
-  if (parts.length < UPVISTA_CAPACITY) {
-    return null
-  }
-
-  const versions: number[] = []
-  for (const p of parts) {
-    const v = Number(p)
-    if (isNaN(v) || v < 0) {
-      return null
-    }
-    versions.push(v)
-  }
-
-  return versions
-
 }
 
 if (NODE_ENV !== 'test') {

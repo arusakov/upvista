@@ -7,7 +7,7 @@
             "request": "launch",
             "program": "${workspaceRoot}/src/main.ts",
             "preLaunchTask": "npm",
-            "stopOnEntry": true,
+            "stopOnEntry": false,
             "args": [],
             "cwd": "${workspaceRoot}",
             "runtimeArgs": [

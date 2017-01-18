@@ -6,7 +6,8 @@
   "files": [
     "dist",
     "platforms.json",
-    "README.md"
+    "README.md",
+    "schema.sql"
   ],
   "scripts": {
     "build": "tsc -p ./src --outDir ./dist",
@@ -63,6 +64,7 @@
     "nyc": "10.1.2",
     "rimraf": "2.5.4",
     "ts-node": "2.0.0",
+    "tslib": "1.5.0",
     "tslint": "4.3.1",
     "typescript": "2.1.5"
   },

@@ -39,9 +39,16 @@ export function createPgPool(): Pool {
   return pool
 }
 
-const selectLastVersionSql = `SELECT * FROM versions`
+type VersionRow = {
+  id: number
+  version: number[]
+  platform: number
+  url: string
+}
 
-export async function selectLastVersion(db: Pool, versionCapacity: number) {
+const selectLastVersionSql = `SELECT * FROM upv_versions WHERE platform = $1`
+
+export async function selectLastVersion(db: Pool, versionCapacity: number, platformId: number) {
   const orderParams = Array
     .apply(null, { length: versionCapacity })
     .map((_v: void, i: number) => `version[${i + 1}] DESC`)
@@ -50,8 +57,8 @@ export async function selectLastVersion(db: Pool, versionCapacity: number) {
   sql += ' ORDER BY ' + orderParams.join(', ')
   sql += ' LIMIT 1;'
 
-  const result = await db.query(sql)
-  return result.rowCount ? result.rows[0] : null
+  const result = await db.query(sql, [platformId])
+  return result.rowCount ? result.rows[0] as VersionRow : null
 }
 
 export async function insertVersion(db: Pool, version: number[], platform: number, url: string) {
