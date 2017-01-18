@@ -5,6 +5,7 @@ import { createServer } from 'http'
 
 import * as Koa from 'koa'
 import * as Router from 'koa-router'
+import * as bodyparser from 'koa-bodyparser';
 
 import { NODE_ENV, PORT } from './env'
 import { createPgPool } from './store'
@@ -12,6 +13,10 @@ import { createPgPool } from './store'
 async function main() {
   const app = new Koa()
   const router = new Router()
+  const jsonParser = bodyparser({
+    enableTypes: ['json'],
+    jsonLimit: '1kb',
+  })
   const db = createPgPool()
 
   app.context.db = db // for ctx.db
@@ -22,6 +27,10 @@ async function main() {
 
   router.get('/update/:platform/:version', (ctx) => {
     ctx.body = { /* response for electron */ }
+  })
+
+  router.post('/bodyparser', jsonParser, (ctx) => {
+    ctx.body = ctx.request.body
   })
 
   app.use(router.routes())
