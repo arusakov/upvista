@@ -53,3 +53,9 @@ export async function selectLastVersion(db: Pool, versionCapacity: number) {
   const result = await db.query(sql)
   return result.rowCount ? result.rows[0] : null
 }
+
+export async function insertVersion(db: Pool, version: number[], platform: number, url: string) {
+  const sql = 'INSERT INTO upv_versions (version, platform, url) VALUES ($1::int[], $2, $3) ' +
+    'ON CONFLICT (version, platform) DO UPDATE SET url = excluded.url;'
+  await db.query(sql, [version, platform, url])
+}

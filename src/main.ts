@@ -7,8 +7,8 @@ import * as Koa from 'koa'
 import * as bodyparser from 'koa-bodyparser'
 import * as Router from 'koa-router'
 
-import { NODE_ENV, PORT } from './env'
-import { createPgPool } from './store'
+import { NODE_ENV, PORT, UPVISTA_CAPACITY } from './env'
+import { createPgPool, insertVersion } from './store'
 
 type PlatformsMap = {
   [index: string]: number | undefined;
@@ -30,11 +30,22 @@ async function main() {
     ctx.body = 'Hello, It\'s upvista!'
   })
 
-  router.get('/update/:platform/:version', (ctx) => {
+  router.get('/update/:platform/:version', async(ctx) => {
+    // TODO(afrolovskiy): url parsing and validation
+    const url = 'http://127.0.0.1/'
+
     const platformId = platforms[ctx.params.platform]
     if (!platformId) {
-      ctx.throw(400)
+      return ctx.throw(400)
     }
+
+    const version = parseVersion(ctx.params.version)
+    if (!version) {
+      return ctx.throw(400)
+    }
+
+    await insertVersion(ctx.db, version, platformId, url)
+
     ctx.body = { /* response for electron */ }
   })
 
@@ -55,6 +66,26 @@ async function main() {
   // start accepting requests if all OK
   server.listen(PORT)
   console.log(`Upvista is running on ${PORT}`) // tslint:disable-line
+}
+
+function parseVersion(s: string): number[] | null {
+  const parts = s.split('.')
+
+  if (parts.length < UPVISTA_CAPACITY) {
+    return null
+  }
+
+  const versions: number[] = []
+  for (const p of parts) {
+    const v = Number(p)
+    if (isNaN(v) || v < 0) {
+      return null
+    }
+    versions.push(v)
+  }
+
+  return versions
+
 }
 
 if (NODE_ENV !== 'test') {
