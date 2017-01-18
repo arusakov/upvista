@@ -7,7 +7,8 @@ import * as Koa from 'koa'
 import * as bodyparser from 'koa-bodyparser'
 import * as Router from 'koa-router'
 
-import { NODE_ENV, PORT, UPVISTA_CAPACITY } from './env'
+import { AUTH_TOKEN, NODE_ENV, PORT, UPVISTA_CAPACITY } from './env'
+import { authenticate } from './middleware'
 import { getSquirrelResponse } from './squirrel'
 import { createPgPool, insertVersion, selectLastVersion } from './store'
 import { createValidator } from './validation'
@@ -19,6 +20,7 @@ async function main() {
     enableTypes: ['json'],
     jsonLimit: '1kb',
   })
+  const auth = authenticate(AUTH_TOKEN)
   const validate = createValidator(UPVISTA_CAPACITY)
   const db = createPgPool()
 
@@ -44,7 +46,7 @@ async function main() {
     ctx.status = 204 // response is 204 in all other cases
   })
 
-  router.post('/api/versions', jsonParser, async(ctx) => {
+  router.post('/api/versions', auth, jsonParser, async(ctx) => {
     const json = ctx.request.body
     if (!json) {
       return ctx.throw(400)
