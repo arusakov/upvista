@@ -4,8 +4,8 @@ import { readFileSync } from 'fs'
 import { createServer } from 'http'
 
 import * as Koa from 'koa'
+import * as bodyparser from 'koa-bodyparser'
 import * as Router from 'koa-router'
-import * as bodyparser from 'koa-bodyparser';
 
 import { NODE_ENV, PORT } from './env'
 import { createPgPool } from './store'
