@@ -5,6 +5,7 @@
   "main": "./dist/main.js",
   "files": [
     "dist",
+    "platforms.json",
     "README.md"
   ],
   "scripts": {
