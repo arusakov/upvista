@@ -1,4 +1,4 @@
-import { parse, Url } from 'url'
+import { parse } from 'url'
 
 import { Pool, PoolConfig } from 'pg'
 
@@ -17,18 +17,15 @@ export function createPgPool(): Pool {
   }
 
   if (DATABASE_URL) {
-    // todo DATABASE_URL parsing validation
-    type UrlStrong = Url & { auth: string, pathname: string }
-    const params = parse(DATABASE_URL) as UrlStrong
-    const auth = params.auth.split(':')
+    const params = parse(DATABASE_URL)
+    const auth = params.auth ? params.auth.split(':') : ['', '']
 
     config = {
-      database: params.pathname.split('/')[1],
+      database: params.pathname && params.pathname.substr(1),
       host: params.hostname,
       max: 20,
       password: auth[1],
       port: Number(params.port),
-      ssl: true,
       user: auth[0],
     }
   }
