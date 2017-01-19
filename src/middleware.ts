@@ -1,14 +1,18 @@
-import * as Koa from 'koa'
+import { Context, Middleware } from 'koa'
 
-export function authenticate(token: string): Koa.Middleware {
-  return async(ctx: Koa.Context, next: Function) => {
-    if (!token || !ctx.headers.authorization) {
+export function authenticate(token: string): Middleware {
+  return (ctx: Context, next: Function) => {
+    if (!token) {
       return ctx.throw(401)
     }
-    const parts = ctx.headers.authorization.split(' ')
+    const header  = ctx.headers.authorization
+    if (!header) {
+      return ctx.throw(401)
+    }
+    const parts = header.split(' ')
     if (parts.length !== 2 || parts[0] !== 'Bearer' || parts[1] !== token) {
       return ctx.throw(401)
     }
-    await next()
+    return next()
   }
 }
