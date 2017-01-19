@@ -1,6 +1,6 @@
 {
   "name": "upvista",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Any versioning update server",
   "main": "./dist/main.js",
   "files": [
