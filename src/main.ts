@@ -8,6 +8,7 @@ import * as bodyparser from 'koa-bodyparser'
 import * as Router from 'koa-router'
 
 import { AUTH_TOKEN, NODE_ENV, PORT, UPVISTA_CAPACITY } from './env'
+import { log } from './log'
 import { authenticate } from './middleware'
 import { getSquirrelResponse } from './squirrel'
 import { createPgPool, insertVersion, selectLastVersion } from './store'
@@ -64,6 +65,7 @@ async function main() {
     ctx.body = '' // empty response for HTTP OK
   })
 
+  app.use(log)
   app.use(router.routes())
   app.use(router.allowedMethods())
 
