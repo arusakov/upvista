@@ -34,7 +34,7 @@ export function createPgPool(): Pool {
     console.error('Postgres error:', err)
   })
 
-  process.on('SIGINT', async() => {
+  process.on('SIGINT', async () => {
     await pool.end()
     process.exit(0)
   })

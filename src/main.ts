@@ -31,7 +31,7 @@ async function main() {
     ctx.body = 'Hello, It\'s upvista!'
   })
 
-  router.get('/update/:platform/:version', async(ctx) => {
+  router.get('/update/:platform/:version', async (ctx) => {
     const vap = validate(ctx.params)
     if (!vap) {
       return ctx.throw(400)
@@ -47,7 +47,7 @@ async function main() {
     ctx.status = 204 // response is 204 in all other cases
   })
 
-  router.post('/api/versions', auth, jsonParser, async(ctx) => {
+  router.post('/api/versions', auth, jsonParser, async (ctx) => {
     const json = ctx.request.body
     if (!json) {
       return ctx.throw(400)
