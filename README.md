@@ -25,3 +25,18 @@ Development
 * `npm run test-ci` - run unit tests in watch mode
 * `npm run coverage` - code coverage in text format in terminal
 * `npm run coverage-html` - code coverage in html format in `coverage` folder
+
+Production
+----------
+* global NODE_ENV=production
+* use [pm2](https://github.com/Unitech/pm2)
+* `npm install -g pm2@latest`
+* `cd /path-to-project`
+* `npm view upvista dist.tarball | xargs curl | tar --strip-components=1 -zxv`
+* `npm install --ignore-script`
+* specify global env before next cmd
+* `pm2 start ./ --name upvista -i max --merge-logs --log-date-format="YYYY-MM-DD HH:mm:ss.SSS Z"`
+* `pm2 save`
+* use `pm2 reload upvista` for [reloading](http://pm2.keymetrics.io/docs/usage/signals-clean-restart/)
+* use `pm2 flush` for [flush logs](http://pm2.keymetrics.io/docs/usage/log-management/#flushing-logs)
+* use `pm2 startup` for generate [startup script](http://pm2.keymetrics.io/docs/usage/startup/)
