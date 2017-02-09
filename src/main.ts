@@ -7,9 +7,9 @@ import * as Koa from 'koa'
 import * as bodyparser from 'koa-bodyparser'
 import * as Router from 'koa-router'
 
+import { authenticate } from './auth'
 import { AUTH_TOKEN, NODE_ENV, PORT, UPVISTA_CAPACITY } from './env'
-import { log } from './log'
-import { authenticate } from './middleware'
+import { logger } from './log'
 import { getSquirrelResponse } from './squirrel'
 import { createPgPool, insertVersion, selectLastVersion } from './store'
 import { createValidator } from './validation'
@@ -65,7 +65,7 @@ async function main() {
     ctx.body = '' // empty response for HTTP OK
   })
 
-  app.use(log)
+  app.use(logger)
   app.use(router.routes())
   app.use(router.allowedMethods())
 
