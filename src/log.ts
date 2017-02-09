@@ -4,7 +4,7 @@ function log(ip: string, method: string, path: string, status: number, startTime
   console.log(`${ip} ${method} ${path} ${status} ${Date.now() - startTime}ms`) // tslint:disable-line
 }
 
-export async function logMiddleware(ctx: Context, next: Function) {
+export async function logger(ctx: Context, next: Function) {
   const time = Date.now()
   try {
     await next()
