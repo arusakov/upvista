@@ -33,7 +33,7 @@ Production
 * `npm install -g pm2@latest`
 * `cd /path-to-project`
 * `npm view upvista dist.tarball | xargs curl | tar --strip-components=1 -zxv`
-* `npm install --ignore-script`
+* `npm install --ignore-scripts`
 * specify global env before next cmd
 * `pm2 start ./ --name upvista -i max --merge-logs --log-date-format="YYYY-MM-DD HH:mm:ss.SSS Z"`
 * `pm2 save`
