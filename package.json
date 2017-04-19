@@ -49,7 +49,7 @@
     "koa-bodyparser": "3.2.0",
     "koa-router": "7.1.1",
     "pg": "6.1.5",
-    "tslib": "1.6.0"
+    "tslib": "1.6.1"
   },
   "devDependencies": {
     "@types/bluebird": "3.0.37",
