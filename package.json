@@ -20,7 +20,7 @@
     "lint": "tslint ./src/**/*.ts ./test/**/*.ts",
     "prepublish": "npm run clean && npm run build",
     "test": "NODE_ENV=test TS_NODE_PROJECT=./test mocha",
-    "test-ci": "NODE_ENV=test TS_NODE_PROJECT=./test mocha --watch --watch-extensions ts",
+    "test-ci": "npm test -- --watch --watch-extensions ts",
     "travis": "npm run lint && npm run compile && npm run coverage && npm run codecov"
   },
   "repository": {
