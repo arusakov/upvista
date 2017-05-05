@@ -1,5 +1,7 @@
 Upvista (work in progress)
 =================================
+
+[![Greenkeeper badge](https://badges.greenkeeper.io/arusakov/upvista.svg)](https://greenkeeper.io/)
 [![Build Status](https://travis-ci.org/arusakov/upvista.svg?branch=master)](https://travis-ci.org/arusakov/upvista)
 [![codecov](https://codecov.io/gh/arusakov/upvista/branch/master/graph/badge.svg)](https://codecov.io/gh/arusakov/upvista)
 [![Known Vulnerabilities](https://snyk.io/test/github/arusakov/upvista/badge.svg)](https://snyk.io/test/github/arusakov/upvista)
